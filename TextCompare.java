@@ -1,23 +1,48 @@
 import java.io.File;
 import java.util.*;
 
+/**
+ * TextCompare class manages TextCompare objects which hold the vectors of Word and DictionaryWord objects
+ * @author heidimitre
+ *
+ */
 public class TextCompare{
-
+	/**
+	 * TextCompare objects have two attributes:
+	 * 1) a wordCompareVector which contains the Word objects read in from a text file
+	 * 2) a dictionaryWordVector which contains the DictionaryWord objects read in from a dictionary file
+	 */
 	public Vector <Word> wordCompareVector;
 	public Vector <DictionaryWord> dictionaryWordVector;
 
+	/**
+	 * The TextCompare constructor creates a new TextCompare object with empty wordCompareVector and dictionaryWordVector
+	 */
 	public TextCompare(){
 		wordCompareVector = new Vector <Word> ();
 		dictionaryWordVector = new Vector <DictionaryWord> ();
 	}
 
+	/**
+	 * The compare Text method calls the readFile method to read a text file
+	 * and calls the readDictionary method to read a dictionary file.
+	 * @param textFile the name of the text file to be read
+	 * @param dictionaryFile the name of the dictionary file to be read
+	 * @return the vector containing all Word objects read from the text file
+	 */
 	public Vector <Word> compareText(String textFile, String dictionaryFile){
 		readFile(textFile);
 		readDictionary(dictionaryFile);
 		return wordCompareVector;
 	}
-
-	//Read words into wordCompareVector
+	
+	/**
+	 * The readFile method reads the text file and adds a new Word object for each word to the wordCompareVector.
+	 * 
+	 * The readFile method checks for duplicate words by calling the isDuplicate method.
+	 * 
+	 * @param fileName the name of the text file to read
+	 */
 	public void readFile(String fileName){
 		String readLine = "";
 		File file = new File(fileName);
@@ -51,7 +76,12 @@ public class TextCompare{
 		}
 	}
 
-	// Check if word is already in wordCompareVector
+	/**
+	 * The isDuplicate method searches each Word in wordCompareVector to determine if there is already a Word
+	 * object for the given string
+	 * @param checkWord is the String that will be searched in wordCompareVector
+	 * @return a boolean that indicates if word is a duplicate
+	 */
 	// Return true if word in vector, false if not in vector
 	public boolean isDuplicate(String checkWord){
 		boolean wordFound = false;
@@ -63,6 +93,14 @@ public class TextCompare{
 		return wordFound;
 	}
 
+	/**
+	 * The readDictionary method reads the dictionary file and adds a new DictionaryWord object 
+	 * for each dictionary word to the dictionaryWordVector.
+	 * 
+	 * The readDictionary method also calls the markAsFound method.
+	 * 
+	 * @param fileName the name of the dictionary file to read
+	 */
 	// Read dictionary words into dictionaryWordVector
 	public void readDictionary(String fileName){
 		String readLine = "";
@@ -99,14 +137,22 @@ public class TextCompare{
 		}
 	}
 
-  public void markAsFound(String dictionaryWord){
-    for(Word word : wordCompareVector){
-      if(dictionaryWord.equals(word.text)){
-        word.isFound = true;
-      }
-    }
-  }
+	/**
+	 * The markAsFound method sets isFound to true for all Word objects in wordCompareVector if
+	 * the Word is found in the dictionary file.
+	 * @param dictionaryWord the word read from the dictionary
+	 */
+	public void markAsFound(String dictionaryWord){
+		for(Word word : wordCompareVector){
+			if(dictionaryWord.equals(word.text)){
+				word.isFound = true;
+			}
+		}
+	}
 
+	/**
+	 * The printWords method is used for testing and prints all Word objects in the wordCompareVector.
+	 */
 	public void printWords(){
 		System.out.println(wordCompareVector.size());
 		for(Word word : wordCompareVector){
@@ -114,6 +160,9 @@ public class TextCompare{
 		}
 	}
 
+	/**
+	 * The printDictionaryWords method is used for testing and prints all DictionaryWord objects in the dictionaryWordVector.
+	 */
 	public void printDictionaryWords(){
 		System.out.println(dictionaryWordVector.size());
 		for(DictionaryWord word : dictionaryWordVector){
