@@ -169,4 +169,29 @@ public class TextCompare{
 			System.out.println(word.text + " " + word.isVisible);
 		}
 	}
+	
+	/**
+	 * The addWordToDictionary method adds a word to the dictionaryWordVector as visible
+	 *
+	 * @param addThis is the Word being added as visible
+	 */
+	public void addWordToDictionary(Word addThis){
+		String word = addThis.text;
+		DictionaryWord addedWord = new DictionaryWord(word);
+		dictionaryWordVector.add(addedWord);
+	}
+	
+	/**
+	 * The ignoreWord method adds a word to the dictionaryWordVector as ignored
+	 *
+	 * @param ignoreThis is the Word being added as ignored
+	 */
+	public void ignoreWord(Word ignoreThis){
+		String word = ignoreThis.text;
+		DictionaryWord ignoredWord = new DictionaryWord(word);
+		ignoredWord.isVisible = false;
+		dictionaryWordVector.add(ignoredWord);
+		
+	
+	}
 }
