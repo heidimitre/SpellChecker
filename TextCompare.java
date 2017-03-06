@@ -1,130 +1,197 @@
 import java.io.File;
 import java.util.*;
 
+/**
+ * TextCompare class manages TextCompare objects which hold the vectors of Word and DictionaryWord objects
+ * @author heidimitre
+ *
+ */
 public class TextCompare{
+	/**
+	 * TextCompare objects have two attributes:
+	 * 1) a wordCompareVector which contains the Word objects read in from a text file
+	 * 2) a dictionaryWordVector which contains the DictionaryWord objects read in from a dictionary file
+	 */
+	public Vector <Word> wordCompareVector;
+	public Vector <DictionaryWord> dictionaryWordVector;
 
-  public Vector <Word> wordCompareVector;
-  public Vector <String> missingWordsVector;
-
-  public TextCompare(){
-    wordCompareVector = new Vector <Word> ();
-    missingWordsVector = new Vector <String> ();
-  }
-
-  public Vector <String> compareText(String textFile, String dictionaryFile){
-    readFile(textFile);
-    readDictionary(dictionaryFile);
-    addMissingWords();
-    return missingWordsVector;
-  }
-
-	public void readFile(String fileName){
-	    String readLine = "";
-	    File file = new File(fileName);
-      String [] foundWords;
-
-	    try{
-	      Scanner scanner = new Scanner(file);
-
-        // Store next line in readLine until end of file reached
-	      while(scanner.hasNextLine()){
-	        readLine = scanner.nextLine();
-
-          // Separate strings by spaces and convert to lower case
-          readLine = readLine.toLowerCase();
-          foundWords = readLine.split(" ");
-
-          // Create array of all words on line and remove all non-letter characters
-          for (int index = 0; index < foundWords.length; index++){
-            foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
-
-            // Check if string is empty and not already in vector before creating a word
-            if(!foundWords[index].equals("") && !wordExists(foundWords[index])){
-                wordCompareVector.add(new Word(foundWords[index]));
-            }
-          }
-	      }
-	      scanner.close();
-	    }
-	    catch(Exception ex){
-	      System.out.println("Error reading file.");
-	    }
+	/**
+	 * The TextCompare constructor creates a new TextCompare object with empty wordCompareVector and dictionaryWordVector
+	 */
+	public TextCompare(){
+		wordCompareVector = new Vector <Word> ();
+		dictionaryWordVector = new Vector <DictionaryWord> ();
 	}
 
-  // Check if word is already in wordCompareVector
-  // Return true if word in vector, false if not in vector
-  public boolean wordExists(String checkWord){
-    boolean wordFound = false;
-    for(Word word : wordCompareVector){
-      if(checkWord.equals(word.text)){
-        wordFound = true;
-      }
-    }
-    return wordFound;
-  }
+	/**
+	 * The compare Text method calls the readFile method to read a text file
+	 * and calls the readDictionary method to read a dictionary file.
+	 * @param textFile the name of the text file to be read
+	 * @param dictionaryFile the name of the dictionary file to be read
+	 * @return the vector containing all Word objects read from the text file
+	 */
+	public Vector <Word> compareText(String textFile, String dictionaryFile){
+		readFile(textFile);
+		readDictionary(dictionaryFile);
+		return wordCompareVector;
+	}
+	
+	/**
+	 * The readFile method reads the text file and adds a new Word object for each word to the wordCompareVector.
+	 * 
+	 * The readFile method checks for duplicate words by calling the isDuplicate method.
+	 * 
+	 * @param fileName the name of the text file to read
+	 */
+	public void readFile(String fileName){
+		String readLine = "";
+		File file = new File(fileName);
+		String [] foundWords;
+		
+		try{
+			Scanner scanner = new Scanner(file);
 
-  // Compare words in wordCompareVector with dictionary words
-  public void readDictionary(String fileName){
-    String readLine = "";
-    File file = new File(fileName);
-    String [] foundWords;
+			// Store next line in readLine until end of file reached
+			while(scanner.hasNextLine()){
+				readLine = scanner.nextLine();
 
-    try{
-      Scanner scanner = new Scanner(file);
+				// Separate strings by spaces and convert to lower case
+				readLine = readLine.toLowerCase();
+				foundWords = readLine.split(" ");
 
-      // Store next line in readLine until end of file reached
-      while(scanner.hasNextLine()){
-        readLine = scanner.nextLine();
+				// Create array of all words on line and remove all non-letter characters
+				for (int index = 0; index < foundWords.length; index++){
+					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
 
-        // Separate strings by spaces and convert to lower case
-        readLine = readLine.toLowerCase();
-        foundWords = readLine.split(" ");
+					// Check if string is empty and not already in vector before creating a word
+					if(!foundWords[index].equals("") && !isDuplicate(foundWords[index])){
+						wordCompareVector.add(new Word(foundWords[index]));
+					}
+				}
+			}
+			scanner.close();
+		}
+		catch(Exception ex){
+			System.out.println("Error reading file.");
+		}
+	}
 
-        // Create array of all words on line and remove all non-letter characters
-        for (int index = 0; index < foundWords.length; index++){
-          foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
+	/**
+	 * The isDuplicate method searches each Word in wordCompareVector to determine if there is already a Word
+	 * object for the given string
+	 * @param checkWord is the String that will be searched in wordCompareVector
+	 * @return a boolean that indicates if word is a duplicate
+	 */
+	// Return true if word in vector, false if not in vector
+	public boolean isDuplicate(String checkWord){
+		boolean wordFound = false;
+		for(Word word : wordCompareVector){
+			if(checkWord.equals(word.text)){
+				wordFound = true;
+			}
+		}
+		return wordFound;
+	}
 
-          // Check if the word is not an empty String
-          // Then mark all words found in wordCompareVector
-          if(!foundWords[index].equals("")){
-            markAsFound(foundWords[index]);
-          }
-        }
-      }
-      scanner.close();
-    }
-    catch(Exception ex){
-      System.out.println("Error reading file.");
-    }
-  }
+	/**
+	 * The readDictionary method reads the dictionary file and adds a new DictionaryWord object 
+	 * for each dictionary word to the dictionaryWordVector.
+	 * 
+	 * The readDictionary method also calls the markAsFound method.
+	 * 
+	 * @param fileName the name of the dictionary file to read
+	 */
+	// Read dictionary words into dictionaryWordVector
+	public void readDictionary(String fileName){
+		String readLine = "";
+		File file = new File(fileName);
+		String [] foundWords;
 
-  public void markAsFound(String dictionaryWord){
-    for(Word word : wordCompareVector){
-      if(dictionaryWord.equals(word.text)){
-        word.isFound = true;
-      }
-    }
-  }
+		try{
+			Scanner scanner = new Scanner(file);
 
-  public void addMissingWords(){
-    for(Word word : wordCompareVector){
-      if(word.isFound == false){
-       missingWordsVector.add(word.text);
-      }
-    }
-  }
+			// Store next line in readLine until end of file reached
+			while(scanner.hasNextLine()){
+				readLine = scanner.nextLine();
 
-  public void printWords(){
-    System.out.println(wordCompareVector.size());
-    for(Word word : wordCompareVector){
-      System.out.println(word.text + " " + word.isFound);
-    }
-  }
+				// Separate strings by spaces and convert to lower case
+				readLine = readLine.toLowerCase();
+				foundWords = readLine.split(" ");
 
-  public void printMissingWords(){
-    System.out.println("Missing words:");
-    for(String word : missingWordsVector){
-      System.out.println(word);
-    }
-  }
+				// Create array of all words on line and remove all non-letter characters
+				for (int index = 0; index < foundWords.length; index++){
+					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
+
+					// Check if string is empty before creating a dictionaryWord
+					// Then mark all words found in wordCompareVector
+					if(!foundWords[index].equals("")){
+						dictionaryWordVector.add(new DictionaryWord(foundWords[index]));
+						markAsFound(foundWords[index]);
+					}
+				}
+			}
+			scanner.close();
+		}
+		catch(Exception ex){
+			System.out.println("Error reading file.");
+		}
+	}
+
+	/**
+	 * The markAsFound method sets isFound to true for all Word objects in wordCompareVector if
+	 * the Word is found in the dictionary file.
+	 * @param dictionaryWord the word read from the dictionary
+	 */
+	public void markAsFound(String dictionaryWord){
+		for(Word word : wordCompareVector){
+			if(dictionaryWord.equals(word.text)){
+				word.isFound = true;
+			}
+		}
+	}
+
+	/**
+	 * The printWords method is used for testing and prints all Word objects in the wordCompareVector.
+	 */
+	public void printWords(){
+		System.out.println(wordCompareVector.size());
+		for(Word word : wordCompareVector){
+			System.out.println(word.text + " " + word.isFound);
+		}
+	}
+
+	/**
+	 * The printDictionaryWords method is used for testing and prints all DictionaryWord objects in the dictionaryWordVector.
+	 */
+	public void printDictionaryWords(){
+		System.out.println(dictionaryWordVector.size());
+		for(DictionaryWord word : dictionaryWordVector){
+			System.out.println(word.text + " " + word.isVisible);
+		}
+	}
+	
+	/**
+	 * The addWordToDictionary method adds a word to the dictionaryWordVector as visible
+	 *
+	 * @param addThis is the Word being added as visible
+	 */
+	public void addWordToDictionary(Word addThis){
+		String word = addThis.text;
+		DictionaryWord addedWord = new DictionaryWord(word);
+		dictionaryWordVector.add(addedWord);
+	}
+	
+	/**
+	 * The ignoreWord method adds a word to the dictionaryWordVector as ignored
+	 *
+	 * @param ignoreThis is the Word being added as ignored
+	 */
+	public void ignoreWord(Word ignoreThis){
+		String word = ignoreThis.text;
+		DictionaryWord ignoredWord = new DictionaryWord(word);
+		ignoredWord.isVisible = false;
+		dictionaryWordVector.add(ignoredWord);
+		
+	
+	}
 }
