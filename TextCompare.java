@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 
 /**
@@ -176,9 +177,10 @@ public class TextCompare{
 	 * @param addThis is the Word being added as visible
 	 */
 	public void addWordToDictionary(Word addThis){
-		String word = addThis.text;
-		DictionaryWord addedWord = new DictionaryWord(word);
-		dictionaryWordVector.add(addedWord);
+		String word = addThis.text; //save text
+		addThis.isFound = true; //change boolean of word to isFound = true
+		DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+		dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
 	}
 	
 	/**
@@ -187,11 +189,51 @@ public class TextCompare{
 	 * @param ignoreThis is the Word being added as ignored
 	 */
 	public void ignoreWord(Word ignoreThis){
-		String word = ignoreThis.text;
-		DictionaryWord ignoredWord = new DictionaryWord(word);
-		ignoredWord.isVisible = false;
-		dictionaryWordVector.add(ignoredWord);
+		String word = ignoreThis.text; //save text
+		ignoreThis.isFound = true; //change boolean of word to isFound = true
+		DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
+		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
 		
 	
+	}
+	
+	/**
+	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
+	 * visible DictionaryWord within the dictionaryWordVector.
+	 * 
+	 */
+	public void writeDictionary(){
+		FileOutputStream fop = null;
+		File file;
+		
+		String content = "";
+		for(DictionaryWord word: dictionaryWordVector){
+			if (word.isVisible){
+				content = content + word.text +"\n";
+			}
+		}
+		
+		try {
+			
+			file = new File("dictionary.txt");
+			fop = new FileOutputStream(file);
+
+			// if file doesn't exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// get the content in bytes
+			byte[] contentInBytes = content.getBytes();
+
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+			
+		}
+		catch(Exception ex){
+			System.out.println("Error writing file.");
+		}
 	}
 }
