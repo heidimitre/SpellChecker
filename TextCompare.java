@@ -230,6 +230,7 @@ public class TextCompare{
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
+			System.out.println("File successfully written!");
 			
 		}
 		catch(Exception ex){

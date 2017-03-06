@@ -75,6 +75,7 @@ public class Panel extends JPanel
 		JPanel ex = new JPanel();
 		ex.setLayout(new FlowLayout());
 		JButton export = new JButton("Export Dictionary");
+		export.addActionListener(new ButtonListener());
 		ex.add(export);
 		south.add(title, BorderLayout.NORTH);
 		south.add(currentWord, BorderLayout.CENTER);
@@ -126,6 +127,10 @@ public class Panel extends JPanel
 				      }
 				    updateUIElements();
 				 }
+				if(source.equals("Export Dictionary"))
+				{
+					comparator.writeDictionary();
+				}
 
 			}
 	 }
