@@ -6,6 +6,12 @@ import java.util.*;
 
 public class Panel extends JPanel
  {
+  	JButton up1;
+	JTextField text1;
+	JTextField text2;
+	JList words;
+	TextCompare comparator = new TextCompare();
+ 
  	public Panel()
  	{
  		//divides app into vertical panels
@@ -30,15 +36,19 @@ public class Panel extends JPanel
 
 
  		//right half of top panel
- 		JButton up1 = new JButton("Upload File 1");
- 		JButton up2 = new JButton("Upload File 2");
+		JLabel fileLabel = new JLabel("Insert Filenames");
+ 		up1 = new JButton("Upload Files");
+		text1 = new JTextField("sampleText.txt");
+		text2 = new JTextField("testDictionary.txt");
  		JButton save = new JButton("Save All");
  		JPanel right = new JPanel();
  		right.setLayout(new BorderLayout());
  		JPanel bP = new JPanel();
- 		bP.setLayout(new FlowLayout());
+ 		bP.setLayout(new GridLayout(4,1));
+		bP.add(fileLabel);
+		bP.add(text1);
+		bP.add(text2);
  		bP.add(up1);
- 		bP.add(up2);
  		right.add(bP, BorderLayout.NORTH);
  		right.add(save, BorderLayout.SOUTH);
 
@@ -64,11 +74,22 @@ public class Panel extends JPanel
 		south.add(list, BorderLayout.CENTER);
 		south.add(ex, BorderLayout.SOUTH);
 		//*********vector is input of JList!!!************
-		JList words = new JList();
+		words = new JList();
 		JScrollPane scr = new JScrollPane(words);
 
 		//add to outermost panel
  		add(north);
  		add(south);
  	}
+
+	public void actionPerformed(ActionEvent event){
+		String source = event.getActionCommand();
+		
+		text1.setText(source);
+		if(source.equals("Upload Text File")){
+			String textFile = text1.getText();
+			String dictionaryFile = text2.getText();		
+			comparator.compareText(textFile,dictionaryFile);
+		}
+	}
  }
