@@ -95,7 +95,7 @@ public class Panel extends JPanel
 					String textFile = text1.getText();
 					String dictionaryFile = text2.getText();		
 					wordVector = comparator.compareText(textFile,dictionaryFile);
-					comparator.printWords();
+					//comparator.printWords();
 					updateUIElements();
 				}
 				if(source.equals("Add Word"))
