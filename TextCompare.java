@@ -36,19 +36,19 @@ public class TextCompare{
 		readDictionary(dictionaryFile);
 		return wordCompareVector;
 	}
-	
+
 	/**
 	 * The readFile method reads the text file and adds a new Word object for each word to the wordCompareVector.
-	 * 
+	 *
 	 * The readFile method checks for duplicate words by calling the isDuplicate method.
-	 * 
+	 *
 	 * @param fileName the name of the text file to read
 	 */
 	public void readFile(String fileName){
 		String readLine = "";
 		File file = new File(fileName);
 		String [] foundWords;
-		
+
 		try{
 			Scanner scanner = new Scanner(file);
 
@@ -95,11 +95,11 @@ public class TextCompare{
 	}
 
 	/**
-	 * The readDictionary method reads the dictionary file and adds a new DictionaryWord object 
+	 * The readDictionary method reads the dictionary file and adds a new DictionaryWord object
 	 * for each dictionary word to the dictionaryWordVector.
-	 * 
+	 *
 	 * The readDictionary method also calls the markAsFound method.
-	 * 
+	 *
 	 * @param fileName the name of the dictionary file to read
 	 */
 	// Read dictionary words into dictionaryWordVector
@@ -125,7 +125,7 @@ public class TextCompare{
 
 					// Check if string is empty before creating a dictionaryWord
 					// Then mark all words found in wordCompareVector
-					if(!foundWords[index].equals("")){
+					if(!foundWords[index].equals("") && !inDictionary(foundWords[index])){
 						dictionaryWordVector.add(new DictionaryWord(foundWords[index]));
 						markAsFound(foundWords[index]);
 					}
@@ -152,6 +152,23 @@ public class TextCompare{
 	}
 
 	/**
+	 * The inDictionary method searches each DictionaryWord in dictionaryWordVector to determine if there is already
+	 * a DictionaryWord object for the given string
+	 * @param checkWord is the String that will be searched in dictionaryWordVector
+	 * @return a boolean that indicates if word is a duplicate
+	 */
+	// Return true if word in vector, false if not in vector
+	public boolean inDictionary(String checkWord){
+		boolean wordFound = false;
+		for(DictionaryWord word : dictionaryWordVector){
+			if(checkWord.equals(word.text)){
+				wordFound = true;
+			}
+		}
+		return wordFound;
+	}
+
+	/**
 	 * The printWords method is used for testing and prints all Word objects in the wordCompareVector.
 	 */
 	public void printWords(){
@@ -170,7 +187,7 @@ public class TextCompare{
 			System.out.println(word.text + " " + word.isVisible);
 		}
 	}
-	
+
 	/**
 	 * The addWordToDictionary method adds a word to the dictionaryWordVector as visible
 	 *
@@ -179,10 +196,12 @@ public class TextCompare{
 	public void addWordToDictionary(Word addThis){
 		String word = addThis.text; //save text
 		addThis.isFound = true; //change boolean of word to isFound = true
-		DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-		dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
-	}
-	
+    if(!inDictionary(addThis.text)){
+      DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+      dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
+    }
+  }
+
 	/**
 	 * The ignoreWord method adds a word to the dictionaryWordVector as ignored
 	 *
@@ -194,29 +213,29 @@ public class TextCompare{
 		DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
 		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
 		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
-		
-	
+
+
 	}
-	
+
 	/**
 	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
 	 * visible DictionaryWord within the dictionaryWordVector.
-	 * 
+	 *
 	 */
 	public void writeDictionary(){
 		FileOutputStream fop = null;
 		File file;
-		
+
 		String content = "";
 		for(DictionaryWord word: dictionaryWordVector){
 			if (word.isVisible){
 				content = content + word.text +"\n";
 			}
 		}
-		
+
 		try {
-			
-			file = new File("dictionary.txt");
+
+			file = new File("/home/heidi/Desktop/groupProject/foo-bar/dictionary.txt");
 			fop = new FileOutputStream(file);
 
 			// if file doesn't exists, then create it
@@ -231,10 +250,10 @@ public class TextCompare{
 			fop.flush();
 			fop.close();
 			System.out.println("File successfully written!");
-			
+
 		}
 		catch(Exception ex){
-			System.out.println("Error writing file.");
+			System.out.println("Error writing file."+ex.toString());
 		}
 	}
 }

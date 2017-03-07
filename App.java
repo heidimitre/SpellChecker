@@ -1,21 +1,17 @@
 import javax.swing.*;
 import java.util.*;
 
-public class App extends JApplet
- {
-   private int APPLET_WIDTH = 900, APPLET_HEIGHT = 350;
+public class App extends JFrame{
 
-   //private CreatePanel createPanel;
-   //private ProjectSpendingPanel spendingPanel;
-   //private Vector projectList;
-
-   //The method init initializes the Applet
-   public void init()
-    {
-    	Panel panel = new Panel();
-    	getContentPane().add(panel);
-
-    	setSize(800, 400);
-
+   public static void main(String [] args){
+     JFrame frame = new App();
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setSize(600, 400);
+      frame.setVisible(true);
     }
+
+   public App(){
+    	Panel panel = new Panel();
+      this.add(panel);
+   }
 }
