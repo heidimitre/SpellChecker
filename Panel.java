@@ -28,6 +28,23 @@ public class Panel extends JPanel
  		JButton addB = new JButton("Add Word");
  		JButton igB = new JButton("Ignore Word");
  		JLabel top = new JLabel("SpellWhiz 2.0");
+ 		Font font = new Font("Helvetica", Font.BOLD, 24);
+ 		JLabel inst1 = new JLabel("Type in file names under 'Insert File Names'");
+ 		JLabel inst2 = new JLabel("Click 'Upload Files' to upload");
+ 		JLabel inst3 = new JLabel("Use the 'Add' and 'Ignore' buttons to edit word list");
+ 		JLabel inst4= new JLabel("Use the 'Export Dictionary' button to export to a file");
+ 		top.setFont(font);
+ 		top.setForeground(Color.blue);
+ 		inst1.setForeground(Color.red);
+ 		inst2.setForeground(Color.red);
+ 		inst3.setForeground(Color.red);
+ 		inst4.setForeground(Color.red);
+ 		JPanel labels = new JPanel();
+ 		labels.setLayout(new GridLayout(4,1));
+ 		labels.add(inst1);
+ 		labels.add(inst2);
+ 		labels.add(inst3);
+ 		labels.add(inst4);
  		JPanel left = new JPanel();
  		left.setLayout(new BorderLayout());
  		JPanel buttonP = new JPanel();
@@ -38,6 +55,7 @@ public class Panel extends JPanel
  		buttonP.add(igB);
  		left.add(top, BorderLayout.NORTH);
  		left.add(buttonP,BorderLayout.SOUTH);
+ 		left.add(labels, BorderLayout.CENTER);
 
 
  		//right half of top panel

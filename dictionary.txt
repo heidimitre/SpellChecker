@@ -49,8 +49,3 @@ find
 where
 the
 tree
-tired
-so
-went
-voice
-from

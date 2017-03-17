@@ -235,7 +235,7 @@ public class TextCompare{
 
 		try {
 
-			file = new File("/home/heidi/Desktop/groupProject/foo-bar/dictionary.txt");
+			file = new File("dictionary.txt");
 			fop = new FileOutputStream(file);
 
 			// if file doesn't exists, then create it
