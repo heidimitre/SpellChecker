@@ -10,16 +10,20 @@ public class Word{
 	 * 2) a boolean that indicates if the word was found in the dictionary
 	 */
 	String text;
-	boolean isFound;
+	boolean isInDictionary;
 
 	/**
 	 * The Word constructor creates a new Word object given a String
 	 * containing the Word's text
 	 * @param text the text of the word read from the file
-	 * isFound is initially set to false
+	 * isInDictionary is initially set to false
 	 */
 	public Word(String text){
 		this.text = text;
-		isFound = false;
+		isInDictionary = false;
 	}
+
+  public String toString(){
+    return text;
+  }
 }

@@ -139,14 +139,14 @@ public class TextCompare{
 	}
 
 	/**
-	 * The markAsFound method sets isFound to true for all Word objects in wordCompareVector if
+	 * The markAsFound method sets isInDictionary to true for all Word objects in wordCompareVector if
 	 * the Word is found in the dictionary file.
 	 * @param dictionaryWord the word read from the dictionary
 	 */
 	public void markAsFound(String dictionaryWord){
 		for(Word word : wordCompareVector){
 			if(dictionaryWord.equals(word.text)){
-				word.isFound = true;
+				word.isInDictionary = true;
 			}
 		}
 	}
@@ -174,7 +174,7 @@ public class TextCompare{
 	public void printWords(){
 		System.out.println(wordCompareVector.size());
 		for(Word word : wordCompareVector){
-			System.out.println(word.text + " " + word.isFound);
+			System.out.println(word.text + " " + word.isInDictionary);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class TextCompare{
 	 */
 	public void addWordToDictionary(Word addThis){
 		String word = addThis.text; //save text
-		addThis.isFound = true; //change boolean of word to isFound = true
+		addThis.isInDictionary = true; //change boolean of word to isInDictionary = true
     if(!inDictionary(addThis.text)){
       DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
       dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
@@ -209,7 +209,7 @@ public class TextCompare{
 	 */
 	public void ignoreWord(Word ignoreThis){
 		String word = ignoreThis.text; //save text
-		ignoreThis.isFound = true; //change boolean of word to isFound = true
+		ignoreThis.isInDictionary = true; //change boolean of word to isInDictionary = true
 		DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
 		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
 		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
