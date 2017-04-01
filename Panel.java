@@ -9,6 +9,7 @@ import java.util.*;
 public class Panel extends JPanel{
 	public static TextCompare comparator = new TextCompare();
 	public static Vector<Word> wordVector;
+  public static int wordVectorIndex = 0;
 	JButton up1;
 	JTextField text1;
 	JTextField text2;
@@ -81,6 +82,8 @@ public class Panel extends JPanel{
  		//center of top panel (empty)
  		JPanel center = new JPanel();
 
+ 		prevButton.addActionListener(new ButtonListener());
+ 		nextButton.addActionListener(new ButtonListener());
     JPanel nextPrevButtonPanel = new JPanel();
     nextPrevButtonPanel.add(prevButton);
     nextPrevButtonPanel.add(nextButton);
@@ -121,39 +124,28 @@ public class Panel extends JPanel{
 					String textFile = text1.getText();
 					String dictionaryFile = text2.getText();
 					wordVector = comparator.compareText(textFile,dictionaryFile);
-					updateUIElements();
 				}
 				if(source.equals("Add Word")){
-					 boolean doneSearching = false;
-				      int index = 0;
-				      while(index < wordVector.size() && doneSearching == false){
-				        if(wordVector.get(index).isInDictionary == false){
-				          wordVector.get(index).isInDictionary = true;
-				          doneSearching = true;
-				          comparator.addWordToDictionary(wordVector.get(index));
-				        }
-				        index++;
-				      }
-				      updateUIElements();
 				}
 				if(source.equals("Ignore Word")){
-					boolean doneSearching = false;
-				    int index = 0;
-				    while(index < wordVector.size() && doneSearching == false){
-				    	if(wordVector.get(index).isInDictionary == false){
-				    		wordVector.get(index).isInDictionary = true;
-				    		doneSearching = true;
-				    		comparator.ignoreWord(wordVector.get(index));
-				        }
-				        index++;
-				      }
-				    updateUIElements();
 				 }
 				if(source.equals("Export Dictionary"))
 				{
 					comparator.writeDictionary();
 				}
-
+        if(source.equals("Previous Word")){
+          wordVectorIndex--;
+          if(wordVectorIndex < 0){
+            wordVectorIndex = 0;
+          }
+        }
+        if(source.equals("Next Word")){
+          wordVectorIndex ++;
+          if(wordVectorIndex > wordVector.size()-1){
+            wordVectorIndex = wordVector.size() - 1;
+          }
+        }
+      updateUIElements();
 			}
 	 }
 
@@ -175,16 +167,21 @@ public class Panel extends JPanel{
   }
 
   public void updateTextArea(){
+    String currentWord = "";
     String wordHTML =  "";
-    for(Word word: wordVector){
-      if(word.isInDictionary == true){
-        wordHTML = wordHTML + "<br><font color=\"green\">" + word.text + "</font></br>";
+    for(int index = 0; index < wordVector.size(); index++){
+      currentWord = wordVector.get(index).text;
+      if(index == wordVectorIndex){
+        currentWord = "<b>{" + currentWord + "}</b>";
+      }
+      if(wordVector.get(index).isInDictionary == true){
+        wordHTML = wordHTML + "<br><font color=\"green\">" + currentWord + "</font></br>";
       }
       else{
-        wordHTML = wordHTML + "<br>" + word.text + "</br>";
+        wordHTML = wordHTML + "<br>" + currentWord + "</br>";
       }
     }
-
   wordDisplay.setText("<html><body>" + wordHTML + "</body></html>");
+  System.out.println("Global index: " + wordVectorIndex + "\n");
   }
 }
