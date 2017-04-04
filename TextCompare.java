@@ -222,7 +222,7 @@ public class TextCompare{
 	 * visible DictionaryWord within the dictionaryWordVector.
 	 *
 	 */
-	public void writeDictionary(){
+	public String writeDictionary(){
 		FileOutputStream fop = null;
 		File file;
 
@@ -249,11 +249,10 @@ public class TextCompare{
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
-			System.out.println("File successfully written!");
-
+      return "File successfully written!\n";
 		}
 		catch(Exception ex){
-			System.out.println("Error writing file."+ex.toString());
+			return "Error writing file."+ex.toString();
 		}
 	}
 }
