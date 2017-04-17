@@ -23,7 +23,7 @@ public class Word{
 		isInDictionary = false;
 	}
 
-  public String toString(){
-    return text;
-  }
+	public String toString(){
+		return text;
+	}
 }

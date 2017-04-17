@@ -3,15 +3,15 @@ import java.util.*;
 
 public class App extends JFrame{
 
-   public static void main(String[] args){
-     JFrame frame = new App();
-    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setSize(600, 800);
-      frame.setVisible(true);
+	public static void main(String[] args){
+	   JFrame frame = new App();
+	   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   frame.setSize(600, 800);
+	   frame.setVisible(true);
     }
 
-   public App(){
-    	Panel panel = new Panel();
-      this.add(panel);
+	public App(){
+		Panel panel = new Panel();
+		this.add(panel);
    }
 }

@@ -196,11 +196,11 @@ public class TextCompare{
 	public void addWordToDictionary(Word addThis){
 		String word = addThis.text; //save text
 		addThis.isInDictionary = true; //change boolean of word to isInDictionary = true
-    if(!inDictionary(addThis.text)){
-      DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-      dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
-    }
-  }
+	    if(!inDictionary(addThis.text)){
+	    	DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+	    	dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
+	    }
+	}
 
 	/**
 	 * The ignoreWord method adds a word to the dictionaryWordVector as ignored
@@ -213,8 +213,6 @@ public class TextCompare{
 		DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
 		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
 		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
-
-
 	}
 
 	/**
@@ -249,7 +247,7 @@ public class TextCompare{
 			fop.write(contentInBytes);
 			fop.flush();
 			fop.close();
-      return "File successfully written!\n";
+			return "File successfully written!\n";
 		}
 		catch(Exception ex){
 			return "Error writing file."+ex.toString();
