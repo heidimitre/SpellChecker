@@ -14,7 +14,6 @@ public static int wordVectorIndex = 0;
 JTextField text1;
 JTextField text2;
 JTextField replaceWord;
-
 JTextPane wordDisplay;
 JTextArea messageDisplay;
 JTextArea statisticsDisplay;
@@ -152,7 +151,9 @@ public Panel(){
 
 			// If Replace button is pressed, replace word with new text
 			if(source.equals("Replace")){
-
+				String replacementString = replaceWord.getText();
+				comparator.replaceWord(wordVector.get(wordVectorIndex), replacementString);
+				replaceWord.setText("");
 			}
 
 			// If Add Word button is pressed, call addWordToDictionary and move on to next word

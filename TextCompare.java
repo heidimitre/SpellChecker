@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * TextCompare class manages TextCompare objects which hold the vectors of Word and DictionaryWord objects
- * @author heidimitre
+ * @author heidimitre and karenshemer
  *
  */
 public class TextCompare{
@@ -87,6 +87,23 @@ public class TextCompare{
 	public boolean isDuplicate(String checkWord){
 		boolean wordFound = false;
 		for(Word word : wordCompareVector){
+			if(checkWord.equals(word.text)){
+				wordFound = true;
+			}
+		}
+		return wordFound;
+	}
+	
+	/**
+	 * The isInDictionary method searches each Word in dictionaryWordVector to determine if there is already a DictionaryWord
+	 * object for the given string
+	 * @param checkWord is the String that will be searched in dictionaryWordVector
+	 * @return a boolean that indicates if word is a duplicate
+	 */
+	// Return true if word in vector, false if not in vector
+	public boolean isInDictionary(String checkWord){
+		boolean wordFound = false;
+		for(DictionaryWord word : dictionaryWordVector){
 			if(checkWord.equals(word.text)){
 				wordFound = true;
 			}
@@ -214,6 +231,19 @@ public class TextCompare{
 		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
 		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
 	}
+	
+	/**
+	 * The replaceWord method changes the text field of a given word, so long as
+	 * the word is not already in the dictionary
+	 *
+	 * @param original is the Word being edited, and replacement is the new String
+	 */
+	public void replaceWord(Word original, String replacement){
+		if((original.isInDictionary == false) && (isInDictionary(replacement.toLowerCase())== false)){
+			original.text = replacement.toLowerCase();
+		}
+	}
+	
 
 	/**
 	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
