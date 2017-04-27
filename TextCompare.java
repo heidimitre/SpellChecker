@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * TextCompare class manages TextCompare objects which hold the vectors of Word and DictionaryWord objects
- * @author heidimitre and karenshemer
+ * @author Heidi Mitre and Karen Shemer
  *
  */
 public class TextCompare{
