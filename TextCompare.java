@@ -43,11 +43,17 @@ public class TextCompare{
 	 * The readFile method checks for duplicate words by calling the isDuplicate method.
 	 *
 	 * @param fileName the name of the text file to read
+	 * @return an array of integers containing the word and line count
 	 */
-	public void readFile(String fileName){
+	public int[] readFile(String fileName){
 		String readLine = "";
 		File file = new File(fileName);
 		String [] foundWords;
+    int[] count = new int[2];
+    // First index stores lines read
+    count[0] = 0;
+    // Second index stores words read
+    count[1] = 0;
 
 		try{
 			Scanner scanner = new Scanner(file);
@@ -55,6 +61,7 @@ public class TextCompare{
 			// Store next line in readLine until end of file reached
 			while(scanner.hasNextLine()){
 				readLine = scanner.nextLine();
+        count[0]++;
 
 				// Separate strings by spaces and convert to lower case
 				readLine = readLine.toLowerCase();
@@ -63,6 +70,7 @@ public class TextCompare{
 				// Create array of all words on line and remove all non-letter characters
 				for (int index = 0; index < foundWords.length; index++){
 					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
+          count[1]++;
 
 					// Check if string is empty and not already in vector before creating a word
 					if(!foundWords[index].equals("") && !isDuplicate(foundWords[index])){
@@ -75,6 +83,7 @@ public class TextCompare{
 		catch(Exception ex){
 			System.out.println("Error reading file.");
 		}
+    return count;
 	}
 
 	/**
@@ -93,7 +102,7 @@ public class TextCompare{
 		}
 		return wordFound;
 	}
-	
+
 	/**
 	 * The isInDictionary method searches each Word in dictionaryWordVector to determine if there is already a DictionaryWord
 	 * object for the given string
@@ -209,41 +218,55 @@ public class TextCompare{
 	 * The addWordToDictionary method adds a word to the dictionaryWordVector as visible
 	 *
 	 * @param addThis is the Word being added as visible
+	 * @return a boolean that indicates if word was added to dictionary
 	 */
-	public void addWordToDictionary(Word addThis){
+	public boolean addWordToDictionary(Word addThis){
 		String word = addThis.text; //save text
+    boolean wasAdded = false;
 		addThis.isInDictionary = true; //change boolean of word to isInDictionary = true
-	    if(!inDictionary(addThis.text)){
-	    	DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-	    	dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
-	    }
+    if(!inDictionary(addThis.text)){
+      DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+      dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
+      wasAdded = true;
+    }
+    return wasAdded;
 	}
 
 	/**
 	 * The ignoreWord method adds a word to the dictionaryWordVector as ignored
 	 *
 	 * @param ignoreThis is the Word being added as ignored
+	 * @return a boolean that indicates if word was ignored
 	 */
-	public void ignoreWord(Word ignoreThis){
+	public boolean ignoreWord(Word ignoreThis){
 		String word = ignoreThis.text; //save text
-		ignoreThis.isInDictionary = true; //change boolean of word to isInDictionary = true
-		DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-		ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
-		dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
-	}
-	
+    boolean wasIgnored = false;
+    if(!inDictionary(ignoreThis.text)){
+		  ignoreThis.isInDictionary = true; //change boolean of word to isInDictionary = true
+		  DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+		  ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
+		  dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
+      wasIgnored = true;
+	  }
+    return wasIgnored;
+  }
+
 	/**
 	 * The replaceWord method changes the text field of a given word, so long as
 	 * the word is not already in the dictionary
 	 *
 	 * @param original is the Word being edited, and replacement is the new String
+	 * @return a boolean that indicates if word was replaced
 	 */
-	public void replaceWord(Word original, String replacement){
+	public boolean replaceWord(Word original, String replacement){
+    boolean wasReplaced = false;
 		if((original.isInDictionary == false) && (isInDictionary(replacement.toLowerCase())== false)){
+      wasReplaced = true;
 			original.text = replacement.toLowerCase();
 		}
+    return wasReplaced;
 	}
-	
+
 
 	/**
 	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
