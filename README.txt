@@ -7,7 +7,9 @@ Heidi Mitre
 Cassandra Guerra
 Karen Shemer
 
+Both updated and archived documentation for this project can be found in the "Documentation" folder.
+
 Instructions to run the application:
 1) Clone the repository
 2) Compile and run App.java
-3) The output dictionary file will be saved in the same directory as the application files
+3) The output dictionary and statistics file will be saved in the same directory as the application files

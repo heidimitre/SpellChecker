@@ -272,6 +272,7 @@ public class TextCompare{
 	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
 	 * visible DictionaryWord within the dictionaryWordVector.
 	 *
+	 * @return a string to indicate to user if dictionary was written to file
 	 */
 	public String writeDictionary(){
 		FileOutputStream fop = null;
@@ -304,6 +305,38 @@ public class TextCompare{
 		}
 		catch(Exception ex){
 			return "Error writing file."+ex.toString();
+		}
+	}
+	/**
+	 * The writeStatistics method creates a statistics file and writes to it
+	 * statistics for the input file
+	 *
+	 * @param fileName of input text file, int statistics to be written to file
+	 */
+	public void writeStatistics(String fileName, int numWordsRead, int numReplaced, int numAdded, int numLinesRead, int numIgnored){
+		FileOutputStream fop = null;
+		File file;
+		String content = "Statistics for " + fileName + ": \nWords In File: " + numWordsRead+"\nWords Replaced: "+numReplaced+"\nWords Added: " + numAdded +"\nLines Read: " + numLinesRead +"\nWords Ignored: " + numIgnored + "\n";
+		try {
+
+			file = new File("statistics-" + fileName);
+			fop = new FileOutputStream(file);
+
+			// if file doesn't exist, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// get the content in bytes
+			byte[] contentInBytes = content.getBytes();
+
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+			return;
+		}
+		catch(Exception ex){
+			return;
 		}
 	}
 }

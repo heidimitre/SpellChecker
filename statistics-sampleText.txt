@@ -1,0 +1,6 @@
+Statistics for sampleText.txt: 
+Words In File: 25
+Words Replaced: 0
+Words Added: 1
+Lines Read: 3
+Words Ignored: 0

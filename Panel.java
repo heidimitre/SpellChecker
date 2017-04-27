@@ -127,7 +127,7 @@ public Panel(){
 	JPanel south = new JPanel();
 	south.setLayout(new BorderLayout());
 	wordDisplay = new JTextPane();
-	wordDisplay.setEditable(false);
+	//wordDisplay.setEditable(false);
   wordDisplay.setContentType("text/html");
   wordDisplayScroller = new JScrollPane(wordDisplay);
 
@@ -147,6 +147,7 @@ public Panel(){
  private class ButtonListener implements ActionListener{
 		public void actionPerformed(ActionEvent event){
 			String source = event.getActionCommand();
+      updateMessageDisplay();
 
 			// If Upload Files button is pressed, call compareText with the two file names
 			if(source.equals("Upload Files")){
@@ -185,6 +186,7 @@ public Panel(){
 			// If Export Dictionary Button is pressed, call writeDictionary and display message
 			if(source.equals("Export Dictionary")){
 				messageDisplay.setText("\n" + comparator.writeDictionary());
+        comparator.writeStatistics(text1.getText(), numWordsRead, numReplaced, numAdded, numLinesRead, numIgnored);
 			}
 
 			// If Previous Word button is pressed, decrement the global counter
@@ -226,6 +228,11 @@ public Panel(){
 
   public void updateStatistics(){
     statisticsDisplay.setText("Statistics: \nWords In File: " + numWordsRead+"\nWords Replaced: "+numReplaced+"\nWords Added: " + numAdded +"\nLines Read: " + numLinesRead +"\nWords Ignored: " + numIgnored + "\n");
+  }
+
+  public void updateMessageDisplay(){
+    messageDisplay.setText(null);
+    messageDisplay.repaint();
   }
 
 	public void incrementCounter(){
