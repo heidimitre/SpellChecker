@@ -159,7 +159,7 @@ public Panel(){
  *
  */
 private class ButtonListener implements ActionListener{
-	
+
 	/**
 	 * The actionPerformed method takes the input event and performs the related action
 	 * (upload files, replace, add or ignore word, export dictionary, or move to next/prev)
@@ -181,7 +181,9 @@ private class ButtonListener implements ActionListener{
 		// If Replace button is pressed, replace word with new text
 		if(source.equals("Replace")){
 			String replacementString = replaceWord.getText();
+			String originalString = wordVector.get(wordVectorIndex).text;
 			if(comparator.replaceWord(wordVector.get(wordVectorIndex), replacementString) == true){
+				comparator.updateFile(text1.getText(), originalString, replacementString);
 				numReplaced++;
 			}
 			replaceWord.setText("");

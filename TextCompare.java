@@ -267,6 +267,57 @@ public class TextCompare{
     return wasReplaced;
 	}
 
+	/**
+	 * The updateFile method creates an updated string to write to a text file
+	 * when a word has been replaced
+	 *
+	 * @param fileName to overwrite, original word and replacement word
+	 */
+	public void updateFile(String fileName, String original, String replacement){
+		String readLine = "";
+	    String nextLine = "";
+	    String fileString = "";
+		File file = new File(fileName);
+		String [] foundWords;
+	    boolean wasReplaced;
+	
+		try{
+			Scanner scanner = new Scanner(file);
+			
+			// Store next line in readLine until end of file reached
+			while(scanner.hasNextLine()){
+				readLine = scanner.nextLine();
+				nextLine = readLine;
+				wasReplaced = false;
+				
+				// Separate strings by spaces and convert to lower case
+				readLine = readLine.toLowerCase();
+				foundWords = readLine.split(" ");
+	
+				// Create array of all words on line and remove all non-letter characters
+				for (int index = 0; index < foundWords.length; index++){
+					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
+					if(foundWords[index].equals(original.toLowerCase())){
+						foundWords[index] = replacement;
+						wasReplaced = true;
+					}
+				}
+				if(wasReplaced == true){
+					nextLine = "";
+					for (int index = 0; index < foundWords.length; index++){
+						nextLine = nextLine + foundWords[index] + " ";
+					}
+				}
+				fileString = fileString + nextLine + " \n";
+			}
+			scanner.close();
+			writeUpdatedFile(fileName, fileString);
+		}
+		catch(Exception ex){
+			return;
+		}
+	}
+
 
 	/**
 	 * The writeDictionary method creates a dictionary file and writes to it all the String text of each
@@ -307,6 +358,7 @@ public class TextCompare{
 			return "Error writing file."+ex.toString();
 		}
 	}
+
 	/**
 	 * The writeStatistics method creates a statistics file and writes to it
 	 * statistics for the input file
@@ -317,8 +369,8 @@ public class TextCompare{
 		FileOutputStream fop = null;
 		File file;
 		String content = "Statistics for " + fileName + ": \nWords In File: " + numWordsRead+"\nWords Replaced: "+numReplaced+"\nWords Added: " + numAdded +"\nLines Read: " + numLinesRead +"\nWords Ignored: " + numIgnored + "\n";
+		
 		try {
-
 			file = new File("statistics-" + fileName);
 			fop = new FileOutputStream(file);
 
@@ -329,6 +381,37 @@ public class TextCompare{
 
 			// get the content in bytes
 			byte[] contentInBytes = content.getBytes();
+
+			fop.write(contentInBytes);
+			fop.flush();
+			fop.close();
+			return;
+		}
+		catch(Exception ex){
+			return;
+		}
+	}
+
+	/**
+	 * The writeUpdatedFile method overwrites a text file with the replaced word
+	 * @param fileName of input text file, fileContent to be written
+	 *
+	 */
+	public void writeUpdatedFile(String fileName, String fileContent){
+		FileOutputStream fop = null;
+		File file;
+
+		try {
+			file = new File(fileName);
+			fop = new FileOutputStream(file);
+
+			// if file doesn't exists, then create it
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+
+			// get the content in bytes
+			byte[] contentInBytes = fileContent.getBytes();
 
 			fop.write(contentInBytes);
 			fop.flush();
