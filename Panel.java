@@ -183,7 +183,11 @@ private class ButtonListener implements ActionListener{
 			String replacementString = replaceWord.getText();
 			String originalString = wordVector.get(wordVectorIndex).text;
 			if(comparator.replaceWord(wordVector.get(wordVectorIndex), replacementString) == true){
-				comparator.updateFile(text1.getText(), originalString, replacementString);
+				try {
+					comparator.updateFile(text1.getText(), originalString, replacementString);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 				numReplaced++;
 			}
 			replaceWord.setText("");

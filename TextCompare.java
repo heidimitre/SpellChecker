@@ -1,5 +1,11 @@
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -49,11 +55,11 @@ public class TextCompare{
 		String readLine = "";
 		File file = new File(fileName);
 		String [] foundWords;
-    int[] count = new int[2];
-    // First index stores lines read
-    count[0] = 0;
-    // Second index stores words read
-    count[1] = 0;
+		int[] count = new int[2];
+		// First index stores lines read
+		count[0] = 0;
+		// Second index stores words read
+		count[1] = 0;
 
 		try{
 			Scanner scanner = new Scanner(file);
@@ -61,7 +67,7 @@ public class TextCompare{
 			// Store next line in readLine until end of file reached
 			while(scanner.hasNextLine()){
 				readLine = scanner.nextLine();
-        count[0]++;
+				count[0]++;
 
 				// Separate strings by spaces and convert to lower case
 				readLine = readLine.toLowerCase();
@@ -70,7 +76,7 @@ public class TextCompare{
 				// Create array of all words on line and remove all non-letter characters
 				for (int index = 0; index < foundWords.length; index++){
 					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
-          count[1]++;
+					count[1]++;
 
 					// Check if string is empty and not already in vector before creating a word
 					if(!foundWords[index].equals("") && !isDuplicate(foundWords[index])){
@@ -272,50 +278,14 @@ public class TextCompare{
 	 * when a word has been replaced
 	 *
 	 * @param fileName to overwrite, original word and replacement word
+	 * @throws Exception 
 	 */
-	public void updateFile(String fileName, String original, String replacement){
-		String readLine = "";
-	    String nextLine = "";
-	    String fileString = "";
-		File file = new File(fileName);
-		String [] foundWords;
-	    boolean wasReplaced;
-	
-		try{
-			Scanner scanner = new Scanner(file);
-			
-			// Store next line in readLine until end of file reached
-			while(scanner.hasNextLine()){
-				readLine = scanner.nextLine();
-				nextLine = readLine;
-				wasReplaced = false;
-				
-				// Separate strings by spaces and convert to lower case
-				readLine = readLine.toLowerCase();
-				foundWords = readLine.split(" ");
-	
-				// Create array of all words on line and remove all non-letter characters
-				for (int index = 0; index < foundWords.length; index++){
-					foundWords[index] = foundWords[index].replaceAll("[^a-z]", "");
-					if(foundWords[index].equals(original.toLowerCase())){
-						foundWords[index] = replacement;
-						wasReplaced = true;
-					}
-				}
-				if(wasReplaced == true){
-					nextLine = "";
-					for (int index = 0; index < foundWords.length; index++){
-						nextLine = nextLine + foundWords[index] + " ";
-					}
-				}
-				fileString = fileString + nextLine + " \n";
-			}
-			scanner.close();
-			writeUpdatedFile(fileName, fileString);
-		}
-		catch(Exception ex){
-			return;
-		}
+	public void updateFile(String fileName, String original, String replacement) throws Exception{
+		Path filePath = Paths.get(fileName);
+		Charset charset = StandardCharsets.UTF_8;
+		String fileString = new String(Files.readAllBytes(filePath), charset);
+		fileString = fileString.replaceAll(original, replacement);
+		Files.write(filePath, fileString.getBytes(charset));
 	}
 
 
@@ -369,7 +339,7 @@ public class TextCompare{
 		FileOutputStream fop = null;
 		File file;
 		String content = "Statistics for " + fileName + ": \nWords In File: " + numWordsRead+"\nWords Replaced: "+numReplaced+"\nWords Added: " + numAdded +"\nLines Read: " + numLinesRead +"\nWords Ignored: " + numIgnored + "\n";
-		
+
 		try {
 			file = new File("statistics-" + fileName);
 			fop = new FileOutputStream(file);
@@ -381,37 +351,6 @@ public class TextCompare{
 
 			// get the content in bytes
 			byte[] contentInBytes = content.getBytes();
-
-			fop.write(contentInBytes);
-			fop.flush();
-			fop.close();
-			return;
-		}
-		catch(Exception ex){
-			return;
-		}
-	}
-
-	/**
-	 * The writeUpdatedFile method overwrites a text file with the replaced word
-	 * @param fileName of input text file, fileContent to be written
-	 *
-	 */
-	public void writeUpdatedFile(String fileName, String fileContent){
-		FileOutputStream fop = null;
-		File file;
-
-		try {
-			file = new File(fileName);
-			fop = new FileOutputStream(file);
-
-			// if file doesn't exists, then create it
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-
-			// get the content in bytes
-			byte[] contentInBytes = fileContent.getBytes();
 
 			fop.write(contentInBytes);
 			fop.flush();
