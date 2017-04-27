@@ -89,7 +89,7 @@ public class TextCompare{
 		catch(Exception ex){
 			System.out.println("Error reading file.");
 		}
-    return count;
+		return count;
 	}
 
 	/**
@@ -228,14 +228,14 @@ public class TextCompare{
 	 */
 	public boolean addWordToDictionary(Word addThis){
 		String word = addThis.text; //save text
-    boolean wasAdded = false;
+		boolean wasAdded = false;
 		addThis.isInDictionary = true; //change boolean of word to isInDictionary = true
-    if(!inDictionary(addThis.text)){
-      DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-      dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
-      wasAdded = true;
-    }
-    return wasAdded;
+		if(!inDictionary(addThis.text)){
+			DictionaryWord addedWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+			dictionaryWordVector.add(addedWord); //add new dictionary word to dictionary vector
+			wasAdded = true;
+		}
+		return wasAdded;
 	}
 
 	/**
@@ -246,16 +246,16 @@ public class TextCompare{
 	 */
 	public boolean ignoreWord(Word ignoreThis){
 		String word = ignoreThis.text; //save text
-    boolean wasIgnored = false;
-    if(!inDictionary(ignoreThis.text)){
-		  ignoreThis.isInDictionary = true; //change boolean of word to isInDictionary = true
-		  DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
-		  ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
-		  dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
-      wasIgnored = true;
-	  }
-    return wasIgnored;
-  }
+		boolean wasIgnored = false;
+		if(!inDictionary(ignoreThis.text)){
+			ignoreThis.isInDictionary = true; //change boolean of word to isInDictionary = true
+			DictionaryWord ignoredWord = new DictionaryWord(word); //create new dictionary word with the same string as word given
+			ignoredWord.isVisible = false; //specify that it is ignored through isVisible = false
+			dictionaryWordVector.add(ignoredWord); //add new dictionary word to dictionary vector
+			wasIgnored = true;
+		}
+		return wasIgnored;
+	}
 
 	/**
 	 * The replaceWord method changes the text field of a given word, so long as
@@ -265,12 +265,12 @@ public class TextCompare{
 	 * @return a boolean that indicates if word was replaced
 	 */
 	public boolean replaceWord(Word original, String replacement){
-    boolean wasReplaced = false;
+		boolean wasReplaced = false;
 		if((original.isInDictionary == false) && (isInDictionary(replacement.toLowerCase())== false)){
-      wasReplaced = true;
+			wasReplaced = true;
 			original.text = replacement.toLowerCase();
 		}
-    return wasReplaced;
+	return wasReplaced;
 	}
 
 	/**
