@@ -295,7 +295,7 @@ public class TextCompare{
 	 *
 	 * @return a string to indicate to user if dictionary was written to file
 	 */
-	public String writeDictionary(){
+	public String writeDictionary(String fileName){
 		FileOutputStream fop = null;
 		File file;
 
@@ -308,7 +308,7 @@ public class TextCompare{
 
 		try {
 
-			file = new File("dictionary.txt");
+			file = new File(fileName);
 			fop = new FileOutputStream(file);
 
 			// if file doesn't exists, then create it

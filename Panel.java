@@ -211,7 +211,7 @@ private class ButtonListener implements ActionListener{
 
 		// If Export Dictionary Button is pressed, call writeDictionary and display message
 		if(source.equals("Export Dictionary")){
-			messageDisplay.setText("\n" + comparator.writeDictionary());
+			messageDisplay.setText("\n" + comparator.writeDictionary(text2.getText()));
 			comparator.writeStatistics(text1.getText(), numWordsRead, numReplaced, numAdded, numLinesRead, numIgnored);
 		}
 
